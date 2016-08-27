@@ -1,14 +1,17 @@
 import React from "react";
-import FlatButton from "material-ui/FlatButton";
+import { Link } from "react-router";
+import RaisedButton from "material-ui/RaisedButton";
 import style from "./ArticleDetailsActions.css";
 
-const ArticleDetailsActions = () => (
+const ArticleDetailsActions = ({onSubmit}) => (
 	<div className={style.container}>
 		<div className={style.Button}>
-			<FlatButton backgroundColor="lightgray" label="Save" primary={true}/>
+			<RaisedButton label="Save" primary={true} onClick={onSubmit}/>
 		</div>
 		<div className={style.Button}>
-			<FlatButton backgroundColor="lightgray" label="Reset" secondary={true}/>
+			<Link to="/">
+				<RaisedButton label="Cancel" secondary={true}/>
+			</Link>
 		</div>
 	</div>
 );

@@ -2,7 +2,7 @@ import React from "react";
 import TextField from "material-ui/TextField";
 import style from "./FormRow.css";
 
-export const FormRow = ({label, children}) => (
+const FormRow = ({label, children}) => (
 	<div className={style.FieldRow}>
 		<label className={style.FieldLabel} >
 			{label}
@@ -10,3 +10,5 @@ export const FormRow = ({label, children}) => (
 		{children}
 	</div>
 );
+
+export default FormRow;

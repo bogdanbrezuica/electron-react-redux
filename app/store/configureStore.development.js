@@ -6,10 +6,12 @@ import { routerMiddleware, push } from 'react-router-redux';
 import rootReducer from '../reducers';
 
 import * as counterActions from '../actions/counter';
+import * as articleActions from '../actions/article';
 
 const actionCreators = {
   ...counterActions,
-  push,
+  ...articleActions,
+  push
 };
 
 const logger = createLogger({
