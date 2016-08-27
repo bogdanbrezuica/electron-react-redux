@@ -1,0 +1,10 @@
+.FieldRow {
+	margin: 10px 0;
+}
+
+.FieldLabel {
+	display: inline-block;
+	margin: 15px 20px;
+	vertical-align: top;
+	width: 200px;
+}

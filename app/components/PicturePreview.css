@@ -1,0 +1,10 @@
+.Container {
+	display: inline-block;
+}
+
+.EmptyPreview {
+	display: inline-block;
+	width: 100px;
+	height: 100px;
+	background-color: lightslategray;
+}
