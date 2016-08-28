@@ -6,6 +6,7 @@ body {
   font-family: Arial, Helvetica, Helvetica Neue;
   overflow-y: auto;
   padding: 30px;
+  height: 100vh;
 }
 
 h2 {

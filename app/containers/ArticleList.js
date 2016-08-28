@@ -24,7 +24,12 @@ class ArticleList extends Component {
 				<ListHeader />
 				<div>
 					{articles.map((article) => 
-						<ArticleCard key={article.id} onDelete={this.onDelete} {...article} /> 
+						<ArticleCard 
+							key={article.id} 
+							onDelete={this.onDelete} 
+							{...article} 
+							image={article.image.small.data} 
+						/> 
 					)}
 				</div>
 			</div>
