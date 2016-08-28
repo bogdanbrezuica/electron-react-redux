@@ -36,7 +36,7 @@ export default class ArticleCard extends Component {
 				/>
 				<CardText>
 					<div className={style.textRow}>Published date: <span>{date}</span></div>
-					<div className={style.textRow}>License: <span>{LicenseType[license]}</span></div>
+					<div className={style.textRow}>License: <span>{LicenseType[license-1]}</span></div>
 				</CardText>
 				<CardActions>
 					<Link to={path}>

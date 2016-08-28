@@ -10,7 +10,9 @@ import PictureUploader from "../components/PictureUploader";
 import PicturePreview from "../components/PicturePreview";
 import ArticleDetailsActions from "../components/ArticleDetailsActions";
 import * as articleActions from '../actions/article';
-import * as _ from "underscore";
+import { findWhere } from "underscore";
+import { FormError } from "../constants/Errors";
+import { hasIllegalCharacters } from "../utils/Utils"
 
 const customDateStyle = {
 	display: 'inline-block',
@@ -44,19 +46,20 @@ class ArticleDetails extends Component {
 	}
 
 	onNameChange(name) {
-		this.setState({ name });
+		this.setState({ name, nameError: undefined });
 	}
 
 	onTitleChange(title) {
-		this.setState({ title });
+		this.setState({ title, titleError: undefined });
 	}
 
 	onContentChange(content) {
-		this.setState({ content });
+		this.setState({ content, contentError: undefined });
 	}
 
 	onLicenseChange(license) {
-		this.setState({ license });
+		console.log(license);
+		this.setState({ license, licenseError: undefined });
 	}
 
 	onImageChange(url) {
@@ -64,6 +67,9 @@ class ArticleDetails extends Component {
 	}
 
 	onSubmit() {
+		if (!this.isFormValid()) {
+			return;
+		}
 		const { generateImagesAndSave, params, dispatch } = this.props; 
 		const { name, title, content, license, date, image } = this.state;
 		const data = { name, title, content, license, date, image };
@@ -71,19 +77,55 @@ class ArticleDetails extends Component {
 		dispatch(routerPush('/'));
 	}
 
-	render() {
-		console.log('article details render');
-		const {name, title, content, license, date, image} = this.state;
+	isFormValid() {
+		let {name, title, content, license} = this.state;
+		let nameError, titleError, contentError, licenseError;
 
+		if (!name) {
+			nameError = FormError.nameEmpty;
+		} else if (hasIllegalCharacters(name)) {
+			nameError = FormError.nameIllegal;
+		}
+
+		if (!title) {
+			titleError = FormError.titleEmpty;
+		}
+		
+		if (!content) {
+			contentError = FormError.contentEmpty;
+		}
+		
+		if (license == null) {
+			licenseError = FormError.licenseEmpty;
+		}
+
+		if (nameError || titleError || contentError || licenseError) {
+			this.setState({
+				nameError, titleError, contentError, licenseError
+			});
+			return false;
+		}
+
+		return true;
+	}
+
+	isInvalid() {
+		const state = this.state;
+		return !!(state.nameError || state.titleError || state.contentError || state.licenseError); 
+	}
+
+	render() {
+		const state = this.state;
+		console.log(state.license);
 		return (
 			<div>
 				<h1>Article Details</h1>
 				<form>
 					<FormRow label="Author name">
-						<TextInput hintText="Author name" value={name} onChange={this.onNameChange} />
+						<TextInput hintText="Author name" errorText={state.nameError} value={state.name} onChange={this.onNameChange} />
 					</FormRow>
 					<FormRow label="Title">
-						<TextInput hintText="Title" value={title} onChange={this.onTitleChange} />
+						<TextInput hintText="Title" errorText={state.titleError} value={state.title} onChange={this.onTitleChange} />
 					</FormRow>
 					<FormRow label="Content">
 						<TextInput
@@ -91,28 +133,30 @@ class ArticleDetails extends Component {
 							hintText="Content"
 							rows={1}
 							rowsMax={6}
-							value={content}
+							errorText={state.contentError}
+							value={state.content}
 							onChange={this.onContentChange}
 						/>
 					</FormRow>
 					<FormRow label="License">
 						<SelectInput 
-							floatingLabelText="License" 
-							value={license} 
+							floatingLabelText="License"
+							errorText={state.licenseError} 
+							value={state.license}
 							onChange={this.onLicenseChange}
 						/>
 					</FormRow>
 					<FormRow label="Publishing Date">
-						<span style={customDateStyle}> {date} </span>
+						<span style={customDateStyle}> {state.date} </span>
 					</FormRow>
 					<FormRow label="Picture">
 						<PictureUploader onChange={this.onImageChange} />
 					</FormRow>
 					<FormRow>
-						<PicturePreview url={image}/>
+						<PicturePreview url={state.image}/>
 					</FormRow>
 					<FormRow>
-						<ArticleDetailsActions onSubmit={this.onSubmit}/>
+						<ArticleDetailsActions isInvalid={this.isInvalid()} onSubmit={this.onSubmit}/>
 					</FormRow>
 				</form>
 			</div>
@@ -125,7 +169,12 @@ function mapStateToProps(state, ownProps) {
 	if (id === 'new') {
 		return {};
 	}
-	const { name, title, content, license, date, image} = getArticleById(state.articles, id);
+	const article = getArticleById(state.articles, id);
+	if (!article) {
+		return {};	
+	}
+
+	const { name, title, content, license, date, image} = article;
 	const url = image && image.large ? image.large.data : '';
 	return {
 		name, title, content, license, date, image: url
@@ -140,7 +189,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 function getArticleById(articles, id) {
-	return _.findWhere(articles, {id});
+	return findWhere(articles, {id});
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ArticleDetails);

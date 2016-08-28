@@ -8,3 +8,7 @@
 	height: 100px;
 	background-color: lightslategray;
 }
+
+.Image {
+	max-width: 250px;
+}

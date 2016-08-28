@@ -10,7 +10,7 @@ const customStyle = {
 export default class SelectInput extends Component {
 	constructor(props) {
 		super(props);
-
+		console.log(props.value);
 		this.onValueChange = this.onValueChange.bind(this);
 	}
 
@@ -25,9 +25,9 @@ export default class SelectInput extends Component {
 				style={customStyle}
 				onChange={this.onValueChange}
 			>
-				<MenuItem key={0} value={0} primaryText={LicenseType[0]} />
-				<MenuItem key={1} value={1} primaryText={LicenseType[1]} />
-				<MenuItem key={2} value={2} primaryText={LicenseType[2]} />
+				<MenuItem key={1} value={1} primaryText={LicenseType[0]} />
+				<MenuItem key={2} value={2} primaryText={LicenseType[1]} />
+				<MenuItem key={3} value={3} primaryText={LicenseType[2]} />
 			</SelectField>
 		);
 	}

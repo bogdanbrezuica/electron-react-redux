@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import FlatButton from "material-ui/FlatButton";
+import RaisedButton from "material-ui/RaisedButton";
 import style from "./PictureUploader.css";
 import { remote } from "electron";
 const { dialog } = remote;
@@ -55,7 +55,7 @@ export default class PictureUploader extends Component {
 
 	render() {
 		return (
-			<FlatButton label="Choose Picture" onClick={this.selectFile}/>
+			<RaisedButton label="Choose Picture" onClick={this.selectFile}/>
 		);
 	}
 }

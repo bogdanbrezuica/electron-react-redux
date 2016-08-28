@@ -3,7 +3,7 @@ import style from "./PicturePreview.css";
 
 const PicturePreview = ({url}) => {
 	let preview = url ?
-		<img src={url} alt="Picture"/> :
+		<img src={url} className={style.Image} alt="Picture"/> :
 		<div className={style.EmptyPreview} >
 			<span>No picture selected</span>
 		</div>;
