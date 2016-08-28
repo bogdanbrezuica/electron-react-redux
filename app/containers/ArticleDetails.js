@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { push as routerPush } from "react-router-redux";
 import moment from "moment";
 import { bindActionCreators } from "redux";
 import FormRow from "../components/FormRow";
@@ -9,6 +10,7 @@ import PictureUploader from "../components/PictureUploader";
 import PicturePreview from "../components/PicturePreview";
 import ArticleDetailsActions from "../components/ArticleDetailsActions";
 import * as articleActions from '../actions/article';
+import * as _ from "underscore";
 
 const customDateStyle = {
 	display: 'inline-block',
@@ -28,7 +30,11 @@ class ArticleDetails extends Component {
 		this.onSubmit = this.onSubmit.bind(this);
 
 		this.state = {
-			...props,
+			name: props.name || '',
+			title: props.title || '',
+			content: props.content || '',
+			license: props.license || null,
+			image: props.image || '',
 			date: props.date || this.getCurrentDate()
 		}
 	}
@@ -54,19 +60,19 @@ class ArticleDetails extends Component {
 	}
 
 	onImageChange(url) {
-		this.setState({
-			image: url
-		});
+		this.setState({ image: url });
 	}
 
 	onSubmit() {
-		const { generateImagesAndSave } = this.props; 
+		const { generateImagesAndSave, params, dispatch } = this.props; 
 		const { name, title, content, license, date, image } = this.state;
 		const data = { name, title, content, license, date, image };
-		generateImagesAndSave(data);
+		generateImagesAndSave(params.id, data);
+		dispatch(routerPush('/'));
 	}
 
 	render() {
+		console.log('article details render');
 		const {name, title, content, license, date, image} = this.state;
 
 		return (
@@ -114,16 +120,27 @@ class ArticleDetails extends Component {
 	}
 }
 
-function mapStateToProps(state) {
-	const {name, title, content, license, date, image} = state.article;
-	const url = image.small.data;
+function mapStateToProps(state, ownProps) {
+	const { id } = ownProps.params;
+	if (id === 'new') {
+		return {};
+	}
+	const { name, title, content, license, date, image} = getArticleById(state.articles, id);
+	const url = image && image.large ? image.large.data : '';
 	return {
 		name, title, content, license, date, image: url
 	}
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(articleActions, dispatch);
+	return {
+		...bindActionCreators(articleActions, dispatch),
+		dispatch
+	};
+}
+
+function getArticleById(articles, id) {
+	return _.findWhere(articles, {id});
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ArticleDetails);

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import SelectField from "material-ui/SelectField";
 import MenuItem from "material-ui/MenuItem";
+import LicenseType from "../constants/LicenseType";
 
 const customStyle = {
 	margin: '-24px 0px'
@@ -24,9 +25,9 @@ export default class SelectInput extends Component {
 				style={customStyle}
 				onChange={this.onValueChange}
 			>
-				<MenuItem key={1} value={1} primaryText="All Rights Reserved" />
-				<MenuItem key={2} value={2} primaryText="Some Rights Reserved" />
-				<MenuItem key={3} value={3} primaryText="No Rights Reserved" />
+				<MenuItem key={0} value={0} primaryText={LicenseType[0]} />
+				<MenuItem key={1} value={1} primaryText={LicenseType[1]} />
+				<MenuItem key={2} value={2} primaryText={LicenseType[2]} />
 			</SelectField>
 		);
 	}

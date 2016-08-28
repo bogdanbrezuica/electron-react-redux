@@ -9,29 +9,32 @@ import './app.global.css';
 
 const initialState = {
   counter: 0,
-  article: {
-    name: "test",
-    title: "test",
-    content: "content",
-    license: 1,
-    image: {
-      small: {
-        width: 100,
-        height: null,
-        data: null
-      },
-      medium: {
-        width: 150,
-        height: null,
-        data: null
-      },
-      large: {
-        width: 200,
-        height: null,
-        data: null
+  articles: [
+    {
+      id: "0",
+      name: "test",
+      title: "test",
+      content: "content",
+      license: 1,
+      image: {
+        small: { width: 100, height: null, data: null },
+        medium: { width: 150, height: null, data: null },
+        large: { width: 200, height: null, data: null }
+      }
+    },
+    {
+      id: "1",
+      name: "test2",
+      title: "test2",
+      content: "content2",
+      license: 2,
+      image: {
+        small: { width: 100, height: null, data: null },
+        medium: { width: 150, height: null, data: null },
+        large: { width: 200, height: null, data: null }
       }
     }
-  }
+  ]
 }
 
 const store = configureStore(initialState);
