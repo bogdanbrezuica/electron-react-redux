@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import ListHeader from "../components/ListHeader";
 import ArticleCard from "../components/ArticleCard";
-import { deleteArticle } from "../actions/article";
+import { deleteArticle } from "../actions/articleActions";
 
 class ArticleList extends Component {
 	constructor(props) {
@@ -27,8 +27,7 @@ class ArticleList extends Component {
 						<ArticleCard 
 							key={article.id} 
 							onDelete={this.onDelete} 
-							{...article} 
-							image={article.image.small.data} 
+							article={article}
 						/> 
 					)}
 				</div>
@@ -38,9 +37,24 @@ class ArticleList extends Component {
 }
 
 function mapStateToProps(state) {
+	let articles = state.articles.map(art => {
+		if (!art.image) {
+			return art;
+		}
+		return {
+			id: art.id,
+			name: art.name,
+			title: art.title,
+			content: art.content,
+			license: art.license,
+			date: art.date,
+			url: art.image.large.data
+		};
+	});
+
 	return {
-		articles: [...state.articles]
-	}
+		articles
+	};
 }
 
 export default connect(mapStateToProps)(ArticleList);

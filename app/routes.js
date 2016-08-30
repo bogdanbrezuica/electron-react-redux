@@ -8,6 +8,6 @@ import ArticleDetails from './containers/ArticleDetails';
 export default (
   <Route path="/" component={App}>
     <IndexRoute component={ArticleList} />
-    <Route path="/:id" component={ArticleDetails} />
+    <Route path="/article/:id" component={ArticleDetails} />
   </Route>
 );

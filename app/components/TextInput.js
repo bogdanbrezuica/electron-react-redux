@@ -5,18 +5,18 @@ export default class TextInput extends Component {
 	constructor(props) {
 		super(props);
 
-		this.onValueChange = this.onValueChange.bind(this);
+//		this.onValueChange = this.onValueChange.bind(this);
 	}
 
-	onValueChange(e) {
-		this.props.onChange(e.target.value);
-	}
+	// onValueChange(e) {
+	// 	this.props.onChange(e.target.value);
+	// }
 
 	render() {
 		return (
 			<TextField
 				{...this.props}
-				onChange={this.onValueChange}
+				onChange={this.props.onChange}
 			/>
 		);
 	}

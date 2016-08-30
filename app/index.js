@@ -8,7 +8,6 @@ import configureStore from './store/configureStore';
 import './app.global.css';
 
 const initialState = {
-  counter: 0,
   articles: [
     {
       id: "0",

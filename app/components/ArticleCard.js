@@ -5,13 +5,6 @@ import RaisedButton from "material-ui/RaisedButton";
 import LicenseType from "../constants/LicenseType";
 import style from "./ArticleCard.css";
 
-const cardStyle={
-	width: '300px',
-	margin: '30px',
-	display: 'inline-block',
-	verticalAlign: 'top'
-}
-
 export default class ArticleCard extends Component {
 	constructor(props) {
 		super(props);
@@ -20,33 +13,33 @@ export default class ArticleCard extends Component {
 	}
 	
 	onDelete() {
-		const { id, onDelete } = this.props;
-		onDelete(id);
+		const { article, onDelete } = this.props;
+		onDelete(article.id);
 	}
 
 	render() {
-		const { id, name, title, content, license, date, image, onDelete } = this.props;
-		const path = `/${id}`;
+		const { article } = this.props;
+		const path = `/article/${article.id}`;
 		return (
 			<Card style={cardStyle}>
 				<CardHeader 
-					title={title}
-					subtitle={name}
+					title={article.title}
+					subtitle={article.name}
 					actAsExpander={true}
 					showExpandableButton={true}
 				/>
 				<CardText>
-					<div className={style.textRow}>Published date: <span>{date}</span></div>
-					<div className={style.textRow}>License: <span>{LicenseType[license-1]}</span></div>
+					<div className={style.textRow}>Published date: <span>{article.date}</span></div>
+					<div className={style.textRow}>License: <span>{LicenseType[article.license-1]}</span></div>
 				</CardText>
 				{
-					image &&
-					<CardMedia expandable={true}>
-						<img src={image} alt='Picture'/>
+					article.url &&
+					<CardMedia expandable={true} style={cardMediaStyle}>
+						<img src={article.url} alt='Picture'/>
 					</CardMedia>
 				}
 				<CardText expandable={true}>
-					<div>{content}</div>
+					<div>{article.content}</div>
 				</CardText>
 				<CardActions>
 					<Link to={path}>
@@ -58,4 +51,17 @@ export default class ArticleCard extends Component {
 			</Card>
 		);
 	}
+}
+
+const cardStyle = {
+	width: '300px',
+	margin: '30px',
+	display: 'inline-block',
+	verticalAlign: 'top'
+}
+
+const cardMediaStyle = {
+	maxWidth: '200px',
+	marginLeft: 'auto',
+	marginRight: 'auto'
 }

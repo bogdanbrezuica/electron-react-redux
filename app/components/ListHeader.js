@@ -5,7 +5,7 @@ import { Link } from "react-router";
 const ListHeader = () => (
 	<div>
 		<h1> Article list </h1>
-		<Link to="/new">
+		<Link to="/article/new">
 			<RaisedButton label="Add new article" />
 		</Link>
 	</div>
