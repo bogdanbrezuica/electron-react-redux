@@ -1,19 +1,16 @@
-import ActionType from "../constants/ActionType";
-import * as _ from "underscore";
+import ActionType from '../constants/ActionType';
 
 export function article(state = {}, action) {
 	switch (action.type) {
 		case ActionType.ADD_ARTICLE:
-			const id = _.uniqueId('art');
-			const newObject = {id, ...action.payload};
-			
 			return {
-				id,
 				...action.payload
 			};
 		case ActionType.EDIT_ARTICLE:
-			if (state.id == action.id) {
-				return Object.assign({}, state, action.payload);
+			if (state.id === action.id) {
+				return {
+					...action.payload
+				};
 			}
 			return state;
 		default:
@@ -22,6 +19,7 @@ export function article(state = {}, action) {
 }
 
 export function articles(state = [], action) {
+	let index;
 	switch (action.type) {
 		case ActionType.ADD_ARTICLE:
 			return [
@@ -31,7 +29,7 @@ export function articles(state = [], action) {
 		case ActionType.ALL_ARTICLES:
 			return action.payload || state;
 		case ActionType.DELETE_ARTICLE:
-			const index = state.findIndex(art => art.id === action.id);
+			index = state.findIndex(art => art.id === action.id);
 			return [
 				...state.slice(0, index),
 				...state.slice(index + 1)

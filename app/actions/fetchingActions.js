@@ -1,6 +1,6 @@
-import ActionType from "../constants/ActionType";
+import ActionType from '../constants/ActionType';
 
-export function fetchArticles() {
+export default function fetchArticles() {
 	return {
 		type: ActionType.FETCH_ARTICLES
 	};

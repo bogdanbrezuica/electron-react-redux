@@ -1,11 +1,11 @@
-import React, { Component, PropTypes } from "react";
-import SelectField from "material-ui/SelectField";
-import MenuItem from "material-ui/MenuItem";
-import LicenseType from "../constants/LicenseType";
+import React, { Component, PropTypes } from 'react';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import LicenseType from '../constants/LicenseType';
 
 const customStyle = {
 	margin: '-24px 0px'
-}
+};
 
 export default class SelectInput extends Component {
 	constructor(props) {
@@ -37,4 +37,4 @@ SelectInput.propTypes = {
 	errorText: PropTypes.string,
 	value: PropTypes.number,
 	onChange: PropTypes.func.isRequired
-}
+};

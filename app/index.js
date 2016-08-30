@@ -5,9 +5,9 @@ import { Router, hashHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import routes from './routes';
 import configureStore from './store/configureStore';
-import { getAllArticles } from "./api/db";
-import { allArticles } from "./actions/articleActions";
-import { fetchArticles } from "./actions/fetchingActions";
+import { getAllArticles } from './api/db';
+import { allArticles } from './actions/articleActions';
+import fetchArticles from './actions/fetchingActions';
 import './app.global.css';
 
 const store = configureStore();

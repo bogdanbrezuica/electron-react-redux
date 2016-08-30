@@ -1,5 +1,5 @@
-import React from "react";
-import style from "./Overlay.css";
+import React from 'react';
+import style from './Overlay.css';
 
 function onClick(e) {
 	e.preventDefault();
@@ -7,5 +7,5 @@ function onClick(e) {
 }
 
 export default () => (
-	<div className={style.Overlay} onClick={onClick}/>
+	<div className={style.Overlay} onClick={onClick} />
 );

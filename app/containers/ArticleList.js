@@ -1,11 +1,12 @@
-import React, { Component, PropTypes } from "react";
-import { connect } from "react-redux";
-import ListHeader from "../components/ListHeader";
-import ArticleCard from "../components/ArticleCard";
-import Overlay from "../components/Overlay";
-import { deleteArticleWithId } from "../actions/articleActions";
-import { findWhere } from "underscore";
-import { remote } from "electron";
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { remote } from 'electron';
+import { findWhere } from 'underscore';
+import ListHeader from '../components/ListHeader';
+import ArticleCard from '../components/ArticleCard';
+import Overlay from '../components/Overlay';
+import { deleteArticleWithId } from '../actions/articleActions';
+
 const { dialog } = remote;
 
 class ArticleList extends Component {
@@ -17,7 +18,7 @@ class ArticleList extends Component {
 
 	onDelete(id) {
 		const { articles, dispatch } = this.props;
-		const article = findWhere(articles, {id});
+		const article = findWhere(articles, { id });
 		const message = `Are you sure you want to delete article ${article.title}?`;
 		const answer = dialog.showMessageBox(null, {
 			type: 'question',
@@ -38,19 +39,25 @@ class ArticleList extends Component {
 			<div>
 				<ListHeader />
 				<div>
-					{articles.map((article) => 
-						<ArticleCard 
-							key={article.id} 
-							onDelete={this.onDelete} 
+					{articles.map((article) =>
+						<ArticleCard
+							key={article.id}
+							onDelete={this.onDelete}
 							article={article}
 						/>
 					)}
 				</div>
-				{ this.props.fetching && <Overlay/>}
+				{this.props.fetching && <Overlay />}
 			</div>
 		);
 	}
 }
+
+ArticleList.propTypes = {
+	articles: PropTypes.arrayOf(React.PropTypes.object).isRequired,
+	fetching: PropTypes.bool,
+	dispatch: PropTypes.func.isRequired
+};
 
 function mapStateToProps(state) {
 	let articles = state.articles.map(art => {
@@ -72,11 +79,6 @@ function mapStateToProps(state) {
 		articles,
 		fetching: state.fetchingArticles
 	};
-}
-
-ArticleList.propTypes = {
-	articles: PropTypes.arrayOf(React.PropTypes.object).isRequired,
-	fetching: PropTypes.bool
 }
 
 export default connect(mapStateToProps)(ArticleList);

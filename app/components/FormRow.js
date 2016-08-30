@@ -1,8 +1,7 @@
-import React from "react";
-import TextField from "material-ui/TextField";
-import style from "./FormRow.css";
+import React, { PropTypes } from 'react';
+import style from './FormRow.css';
 
-const FormRow = ({label, children}) => (
+const FormRow = ({ label, children }) => (
 	<div className={style.FieldRow}>
 		<label className={style.FieldLabel} >
 			{label}
@@ -10,5 +9,10 @@ const FormRow = ({label, children}) => (
 		{children}
 	</div>
 );
+
+FormRow.propTypes = {
+	label: PropTypes.string,
+	children: PropTypes.element
+};
 
 export default FormRow;

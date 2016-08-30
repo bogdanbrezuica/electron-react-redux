@@ -1,13 +1,13 @@
-import React, { Component, PropTypes } from "react";
-import moment from "moment";
-import TextInput from "./TextInput";
-import FormRow from "./FormRow";
-import SelectInput from "./SelectInput";
-import PictureUploader from "./PictureUploader";
-import PicturePreview from "./PicturePreview";
-import ArticleDetailsActions from "./ArticleDetailsActions";
-import { hasIllegalCharacters } from "../utils/Utils";
-import { FormError } from "../constants/Errors";
+import React, { Component, PropTypes } from 'react';
+import moment from 'moment';
+import TextField from 'material-ui/TextField';
+import FormRow from './FormRow';
+import SelectInput from './SelectInput';
+import PictureUploader from './PictureUploader';
+import PicturePreview from './PicturePreview';
+import ArticleDetailsActions from './ArticleDetailsActions';
+import { hasIllegalCharacters } from '../utils/Utils';
+import FormError from '../constants/Errors';
 
 export default class ArticleForm extends Component {
 	constructor(props) {
@@ -29,16 +29,12 @@ export default class ArticleForm extends Component {
 				url: article.url || '',
 				date: article.date || this.getCurrentDate()
 			}
-		}
-	}
-
-	getCurrentDate() {
-		return moment().format('MMMM Do YYYY');
+		};
 	}
 
 	onTextChange(event) {
 		let { article } = this.state;
-		article[event.target.name] = event.target.value,
+		article[event.target.name] = event.target.value;
 
 		this.setState({
 			article,
@@ -59,7 +55,7 @@ export default class ArticleForm extends Component {
 	}
 
 	onCancel() {
-		this.props.onCancel(this.state.article.title);
+		this.props.onCancel(this.state.article);
 	}
 
 	onSubmit() {
@@ -69,8 +65,12 @@ export default class ArticleForm extends Component {
 		this.props.onSubmit(this.state.article);
 	}
 
+	getCurrentDate() {
+		return moment().format('MMMM Do YYYY');
+	}
+
 	isFormValid() {
-		let {name, title, content, license} = this.state.article;
+		let { name, title, content, license } = this.state.article;
 		let nameError, titleError, contentError, licenseError;
 
 		if (!name) {
@@ -82,11 +82,11 @@ export default class ArticleForm extends Component {
 		if (!title) {
 			titleError = FormError.titleEmpty;
 		}
-		
+
 		if (!content) {
 			contentError = FormError.contentEmpty;
 		}
-		
+
 		if (license == null) {
 			licenseError = FormError.licenseEmpty;
 		}
@@ -103,7 +103,7 @@ export default class ArticleForm extends Component {
 
 	isInvalid() {
 		const state = this.state;
-		return !!(state.nameError || state.titleError || state.contentError || state.licenseError); 
+		return !!(state.nameError || state.titleError || state.contentError || state.licenseError);
 	}
 
 	render() {
@@ -113,25 +113,27 @@ export default class ArticleForm extends Component {
 		return (
 			<form>
 				<FormRow label="Author name">
-					<TextInput 
-						hintText="Author name" 
+					<TextField
+						hintText="Author name"
 						name="name"
 						errorText={state.nameError}
 						value={article.name}
-						onChange={this.onTextChange} 
+						onChange={this.onTextChange}
+						{...textFieldStyle}
 					/>
 				</FormRow>
 				<FormRow label="Title">
-					<TextInput 
-						hintText="Title" 
-						name="title" 
-						errorText={state.titleError} 
-						value={article.title} 
-						onChange={this.onTextChange} 
+					<TextField
+						hintText="Title"
+						name="title"
+						errorText={state.titleError}
+						value={article.title}
+						onChange={this.onTextChange}
+						{...textFieldStyle}
 					/>
 				</FormRow>
 				<FormRow label="Content">
-					<TextInput
+					<TextField
 						multiLine={true}
 						hintText="Content"
 						name="content"
@@ -140,28 +142,33 @@ export default class ArticleForm extends Component {
 						errorText={state.contentError}
 						value={article.content}
 						onChange={this.onTextChange}
+						{...textFieldStyle}
 					/>
 				</FormRow>
 				<FormRow label="License">
-					<SelectInput 
-						floatingLabelText="License"
-						errorText={state.licenseError} 
+					<SelectInput
+						floatingLabelText="License type"
+						floatingLabelStyle={{ color: 'lightgray' }}
+						labelStyle={{ color: 'white' }}
+						errorText={state.licenseError}
 						value={article.license}
 						onChange={this.onLicenseChange}
 					/>
 				</FormRow>
 				<FormRow label="Publishing Date">
-					<span style={customDateStyle}> {article.date} </span>
+					<span style={customDateStyle}>
+						{article.date}
+					</span>
 				</FormRow>
 				<FormRow label="Picture">
 					<PictureUploader onChange={this.onImageChange} />
 				</FormRow>
 				<FormRow>
-					<PicturePreview url={article.url}/>
+					<PicturePreview url={article.url} />
 				</FormRow>
 				<FormRow>
-					<ArticleDetailsActions 
-						isInvalid={this.isInvalid()} 
+					<ArticleDetailsActions
+						isInvalid={this.isInvalid()}
 						onSubmit={this.onSubmit}
 						onCancel={this.onCancel}
 					/>
@@ -175,10 +182,22 @@ ArticleForm.propTypes = {
 	onSubmit: PropTypes.func.isRequired,
 	onCancel: PropTypes.func.isRequired,
 	article: PropTypes.object.isRequired
-}
+};
 
 const customDateStyle = {
 	display: 'inline-block',
 	height: '48px',
 	lineHeight: '48px',
-}
+};
+
+const textFieldStyle = {
+	inputStyle: {
+		color: 'white'
+	},
+	textareaStyle: {
+		color: 'white'
+	},
+	hintStyle: {
+		color: 'darkgray'
+	}
+};

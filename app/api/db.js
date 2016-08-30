@@ -1,4 +1,4 @@
-import Dexie from "dexie";
+import Dexie from 'dexie';
 
 let db;
 
@@ -9,7 +9,7 @@ function init() {
 	});
 
 	db.open().catch((error) => {
-		console.error('Couldn\'t open database ' + error);
+		console.error(`Couldn't open database ${error}`);
 	});
 }
 

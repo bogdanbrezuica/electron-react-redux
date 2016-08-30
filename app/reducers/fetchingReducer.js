@@ -1,7 +1,7 @@
-import ActionType from "../constants/ActionType";
+import ActionType from '../constants/ActionType';
 
 export function fetchingArticles(state = false, action) {
-	switch(action.type) {
+	switch (action.type) {
 		case ActionType.FETCH_ARTICLES:
 			return true;
 		case ActionType.ALL_ARTICLES:

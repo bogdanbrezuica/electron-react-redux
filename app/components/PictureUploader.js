@@ -1,7 +1,7 @@
-import React, { Component, PropTypes } from "react";
-import RaisedButton from "material-ui/RaisedButton";
-import style from "./PictureUploader.css";
-import { remote } from "electron";
+import React, { Component, PropTypes } from 'react';
+import { remote } from 'electron';
+import RaisedButton from 'material-ui/RaisedButton';
+
 const { dialog } = remote;
 
 export default class PictureUploader extends Component {
@@ -17,7 +17,7 @@ export default class PictureUploader extends Component {
 			filters: [
 				{ name: 'Images', extensions: ['png', 'jpg', 'bmp'] }
 			],
-			properties: [ 'openFile']
+			properties: ['openFile']
 		};
 
 		const filesPath = dialog.showOpenDialog(dialogOptions);
@@ -31,17 +31,17 @@ export default class PictureUploader extends Component {
 		let xhr = new XMLHttpRequest(),
 			blob;
 
-		xhr.open("GET", filePath, true);
-		xhr.responseType = "blob";
+		xhr.open('GET', filePath, true);
+		xhr.responseType = 'blob';
 
-		xhr.addEventListener("load", () => {
+		xhr.addEventListener('load', () => {
 			if (xhr.status === 200) {
 				blob = xhr.response;
 
 				const reader = new FileReader();
 				reader.onloadend = () => {
 					onChange(reader.result);
-				}
+				};
 
 				reader.readAsDataURL(blob);
 			}
@@ -52,11 +52,11 @@ export default class PictureUploader extends Component {
 
 	render() {
 		return (
-			<RaisedButton label="Choose Picture" onClick={this.selectFile}/>
+			<RaisedButton label="Choose Picture" onClick={this.selectFile} />
 		);
 	}
 }
 
 PictureUploader.propTypes = {
 	onChange: PropTypes.func.isRequired
-}
+};
