@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import RaisedButton from "material-ui/RaisedButton";
 import style from "./PictureUploader.css";
 import { remote } from "electron";
@@ -15,12 +15,9 @@ export default class PictureUploader extends Component {
 	selectFile() {
 		const dialogOptions = {
 			filters: [
-				{ name: 'Images', extensions: ['png', 'jpg', 'bmp', 'gif'] },
-				{ name: 'All files', extensions: ['*'] }
+				{ name: 'Images', extensions: ['png', 'jpg', 'bmp'] }
 			],
-			properties: [
-				'openFile'
-			]
+			properties: [ 'openFile']
 		};
 
 		const filesPath = dialog.showOpenDialog(dialogOptions);
@@ -58,4 +55,8 @@ export default class PictureUploader extends Component {
 			<RaisedButton label="Choose Picture" onClick={this.selectFile}/>
 		);
 	}
+}
+
+PictureUploader.propTypes = {
+	onChange: PropTypes.func.isRequired
 }

@@ -12,10 +12,8 @@ export function article(state = {}, action) {
 				...action.payload
 			};
 		case ActionType.EDIT_ARTICLE:
-			if (state.id === action.id) {
-				return {
-					...action.payload
-				};
+			if (state.id == action.id) {
+				return Object.assign({}, state, action.payload);
 			}
 			return state;
 		default:
@@ -30,6 +28,8 @@ export function articles(state = [], action) {
 				...state,
 				article(undefined, action)
 			];
+		case ActionType.ALL_ARTICLES:
+			return action.payload || state;
 		case ActionType.DELETE_ARTICLE:
 			const index = state.findIndex(art => art.id === action.id);
 			return [

@@ -1,20 +1,29 @@
-import ActionType from '../constants/ActionType';
+import ActionType from "../constants/ActionType";
+import { push as routerPush } from 'react-router-redux';
+import * as db from "../api/db";
 
-export function deleteArticle(id) {
+export function allArticles(articles) {
+	return {
+		type: ActionType.ALL_ARTICLES,
+		payload: articles
+	}
+}
+
+function deleteArticle(id) {
 	return {
 		type: ActionType.DELETE_ARTICLE,
 		id
 	}
 }
 
-export function addArticle(payload) {
+function addArticle(payload) {
 	return {
 		type: ActionType.ADD_ARTICLE,
 		payload
 	}
 }
 
-export function editArticle(id, payload) {
+function editArticle(id, payload) {
 	return {
 		id,
 		type: ActionType.EDIT_ARTICLE,
@@ -22,10 +31,9 @@ export function editArticle(id, payload) {
 	};
 }
 
-export function generateImagesAndSave(id, payload) {
+export function saveArticle(id, payload) {
 	return dispatch => {
 		let newPayload = {
-			id,
 			name: payload.name,
 			title: payload.title,
 			content: payload.content,
@@ -34,25 +42,51 @@ export function generateImagesAndSave(id, payload) {
 			image: {}
 		}
 		let url = payload.url;
+
+		if (id !== 'new') {
+			newPayload.id = parseInt(id);
+		}
+		
 		if (!url) {
-			if (id === 'new') {
-				dispatch(addArticle(newPayload));
-			} else {
-				dispatch(editArticle(id, newPayload));
-			}
+			saveArticleInDb(id, newPayload, dispatch);
 			return;
 		}
+
 		let img = new Image();
 		img.onload = () => {
 			newPayload.image = {};
 			newPayload.image.small = resizeImage(img, 100);
 			newPayload.image.medium = resizeImage(img, 150);
 			newPayload.image.large = resizeImage(img, 200);
-			id === 'new' ? dispatch(addArticle(newPayload)): dispatch(editArticle(id, newPayload));
+
+			saveArticleInDb(id, newPayload, dispatch);
 		};
-		img.src = url;
+		img.src = url || '';
 	}
 }		
+
+function saveArticleInDb(id, newPayload, dispatch) {
+	db.saveArticle(newPayload).then(() => {
+		if (id === 'new') {
+			dispatch(addArticle(newPayload));
+		} else {
+			dispatch(editArticle(parseInt(id), newPayload));
+		}
+		dispatch(routerPush('/'));
+	}).catch((err) => {
+		console.error(err);
+	});
+}
+
+export function deleteArticleWithId(id) {
+	return dispatch => {
+		db.deleteArticle(id).then(() => {
+			dispatch(deleteArticle(id));	
+		}).catch((err) => {
+			console.log(err);
+		});
+	};
+}
 
 function resizeImage(img, width) {
 	console.log('resize image');

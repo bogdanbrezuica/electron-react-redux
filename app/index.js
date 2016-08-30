@@ -5,38 +5,18 @@ import { Router, hashHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import routes from './routes';
 import configureStore from './store/configureStore';
+import { getAllArticles } from "./api/db";
+import { allArticles } from "./actions/articleActions";
+import { fetchArticles } from "./actions/fetchingActions";
 import './app.global.css';
 
-const initialState = {
-  articles: [
-    {
-      id: "0",
-      name: "test",
-      title: "test",
-      content: "content",
-      license: 1,
-      image: {
-        small: { width: 100, height: null, data: null },
-        medium: { width: 150, height: null, data: null },
-        large: { width: 200, height: null, data: null }
-      }
-    },
-    {
-      id: "1",
-      name: "test2",
-      title: "test2",
-      content: "content2",
-      license: 2,
-      image: {
-        small: { width: 100, height: null, data: null },
-        medium: { width: 150, height: null, data: null },
-        large: { width: 200, height: null, data: null }
-      }
-    }
-  ]
-}
+const store = configureStore();
 
-const store = configureStore(initialState);
+store.dispatch(fetchArticles());
+getAllArticles().then((articles) => {
+  store.dispatch(allArticles(articles));
+});
+
 const history = syncHistoryWithStore(hashHistory, store);
 
 render(

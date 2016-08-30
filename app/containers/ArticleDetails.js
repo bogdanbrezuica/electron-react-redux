@@ -1,20 +1,39 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as articleActions from '../actions/articleActions';
 import { findWhere } from "underscore";
 import ArticleForm from "../components/ArticleForm";
+import { push as routerPush } from "react-router-redux";
+import { remote } from "electron";
+const { dialog } = remote;
 
 class ArticleDetails extends Component {
 	constructor(props) {
 		super(props);
 
+		this.initialArticle = props.article;
 		this.onSubmit = this.onSubmit.bind(this);
+		this.onCancel = this.onCancel.bind(this);
 	}
 
 	onSubmit(article) {
-		const { generateImagesAndSave, params } = this.props; 
-		generateImagesAndSave(params.id, article);
+		const { saveArticle, params } = this.props; 
+		saveArticle(params.id, article);
+	}
+
+	onCancel(title) {
+		const message = 'Are you sure you want to cancel? All your changes will be lost';
+		const answer = dialog.showMessageBox(null, {
+			type: 'question',
+			buttons: ['Yes', 'No'],
+			message,
+			title,
+			noLink: true
+		});
+		if (answer === 0) {
+			this.props.dispatch(routerPush('/'));
+		}
 	}
 
 	render() {
@@ -23,7 +42,8 @@ class ArticleDetails extends Component {
 				<h1>Article Details</h1>
 				<ArticleForm 
 					article={this.props.article}
-					onSubmit={this.onSubmit}				
+					onSubmit={this.onSubmit}
+					onCancel={this.onCancel}				
 				/>
 			</div>
 		);
@@ -31,13 +51,17 @@ class ArticleDetails extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-	const { id } = ownProps.params;
+	let { id } = ownProps.params;
+	if (id !== 'new') {
+		id = parseInt(id);
+	}
 	let stateArticle = getArticleById(state.articles, id);
 	if (!stateArticle) {
 		return { article: {}};
 	}
-	const { image } = stateArticle.image;
+	const { image } = stateArticle;
 	const url = image && image.large ? image.large.data : '';
+
 	return {
 		article: {
 			name: stateArticle.name,
@@ -48,6 +72,10 @@ function mapStateToProps(state, ownProps) {
 			url
 		}
 	};
+}
+
+ArticleDetails.propTypes = {
+	article: PropTypes.object.isRequired
 }
 
 function mapDispatchToProps(dispatch) {

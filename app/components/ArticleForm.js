@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import moment from "moment";
 import TextInput from "./TextInput";
 import FormRow from "./FormRow";
@@ -17,6 +17,7 @@ export default class ArticleForm extends Component {
 		this.onLicenseChange = this.onLicenseChange.bind(this);
 		this.onImageChange = this.onImageChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
+		this.onCancel = this.onCancel.bind(this);
 
 		let { article } = props;
 		this.state = {
@@ -55,6 +56,10 @@ export default class ArticleForm extends Component {
 		let { article } = this.state;
 		article.url = url;
 		this.setState({ article });
+	}
+
+	onCancel() {
+		this.props.onCancel(this.state.article.title);
 	}
 
 	onSubmit() {
@@ -155,11 +160,21 @@ export default class ArticleForm extends Component {
 					<PicturePreview url={article.url}/>
 				</FormRow>
 				<FormRow>
-					<ArticleDetailsActions isInvalid={this.isInvalid()} onSubmit={this.onSubmit}/>
+					<ArticleDetailsActions 
+						isInvalid={this.isInvalid()} 
+						onSubmit={this.onSubmit}
+						onCancel={this.onCancel}
+					/>
 				</FormRow>
 			</form>
 		);
 	}
+}
+
+ArticleForm.propTypes = {
+	onSubmit: PropTypes.func.isRequired,
+	onCancel: PropTypes.func.isRequired,
+	article: PropTypes.object.isRequired
 }
 
 const customDateStyle = {

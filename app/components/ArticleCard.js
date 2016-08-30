@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
 import { Card, CardHeader, CardTitle, CardActions, CardText, CardMedia } from "material-ui/Card";
 import RaisedButton from "material-ui/RaisedButton";
@@ -51,6 +51,11 @@ export default class ArticleCard extends Component {
 			</Card>
 		);
 	}
+}
+
+ArticleCard.propTypes = {
+	article: PropTypes.object.isRequired,
+	onDelete: PropTypes.func.isRequired
 }
 
 const cardStyle = {
